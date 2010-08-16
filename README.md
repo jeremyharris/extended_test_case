@@ -26,8 +26,10 @@ anything
 
 ## Links
 
-- [http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way][http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way]
-- [http://mark-story.com/posts/view/testing-cakephp-controllers-mock-objects-edition][http://mark-story.com/posts/view/testing-cakephp-controllers-mock-objects-edition]
+- [http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way][2]
+- [http://mark-story.com/posts/view/testing-cakephp-controllers-mock-objects-edition][3]
 - [http://www.42pixels.com/blog/testing-controllers-the-slightly-less-hard-way][1]
 
 [1]: http://www.42pixels.com/blog/testing-controllers-the-slightly-less-hard-way
+[2]: http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way
+[3]: http://mark-story.com/posts/view/testing-cakephp-controllers-mock-objects-edition
