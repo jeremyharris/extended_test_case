@@ -97,16 +97,22 @@ class ExtendedTestCase extends CakeTestCase {
 
 		// set up the controller based on the url
 		$urlParams = Router::parse($url);
+		$action = $urlParams['action'];
+		$prefix = null;
 		$urlParams['url']['url'] = $url;
 		if (strtolower($options['method']) == 'get') {
 			$urlParams['url'] = array_merge($options['data'], $urlParams['url']);
 		} else {
 			$Controller->data = $options['data'];
 		}
+		if (isset($urlParams['prefix'])) {
+			$action = $urlParams['prefix'].'_'.$action;
+			$prefix = $urlParams['prefix'].'/';
+		}
 		$Controller->passedArgs = $urlParams['named'];
 		$Controller->params = $urlParams;
 		$Controller->url = $urlParams;
-		$Controller->action = $urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
+		$Controller->action = $prefix.$urlParams['plugin'].'/'.$urlParams['controller'].'/'.$urlParams['action'];
 
 		// only initialize the components once
 		if ($this->_componentsInitialized === false) {
@@ -117,7 +123,7 @@ class ExtendedTestCase extends CakeTestCase {
 		$Controller->beforeFilter();
 		$Controller->Component->startup($Controller);
 
-		call_user_func_array(array(&$Controller, $urlParams['action']), $urlParams['pass']);
+		call_user_func_array(array(&$Controller, $action), $urlParams['pass']);
 
 		$Controller->beforeRender();
 		$Controller->Component->triggerCallback('beforeRender', $Controller);

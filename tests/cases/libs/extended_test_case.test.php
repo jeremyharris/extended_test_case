@@ -90,6 +90,14 @@ class DummiesController extends Controller {
 	function get_me() {
 		$this->set('query', $this->params['url']['query']);
 	}
+
+	function admin_index() {
+		$this->set('admin', true);
+	}
+
+	function prefix_action() {
+		$this->set('prefix', true);
+	}
 }
 
 Mock::generatePartial('DummiesController', 'MockDummiesController', array('header', 'render', 'redirect'));
@@ -170,6 +178,19 @@ class ExtendedTestCaseTestCase extends CakeTestCase {
 		$this->assertFalse($vars['saveSuccess']);
 	}
 
-}
+	function testPrefixActions() {
+		$oldPrefixes = Configure::read('Routing.prefixes');
+		Configure::write('Routing.prefixes', array('admin', 'prefix'));
+		Router::reload();
 
+		$vars = $this->ExtendedTestCase->testAction('/admin/dummies/');
+		$this->assertTrue($vars['admin']);
+
+		$vars = $this->ExtendedTestCase->testAction('/prefix/dummies/action');
+		$this->assertTrue($vars['prefix']);
+
+		Configure::write('Routing.prefixes', $oldPrefixes);
+	}
+
+}
 ?>
