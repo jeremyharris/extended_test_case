@@ -2,10 +2,14 @@
 /**
  * ExtendedTestCase class.
  *
- * @copyright     Copyright 2010, Jeremy Harris
- * @link          http://42pixels.com Jeremy Harris
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright		Copyright 2010, Jeremy Harris
+ * @link			http://42pixels.com Jeremy Harris
  * @package			extended_test_case
- * @subpackage    extended_test_case.libs
+ * @subpackage		extended_test_case.libs
+ * @license			MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
@@ -24,7 +28,7 @@ SimpleTest::ignore('ExtendedTestCase');
  * Extends the functionality of CakeTestCase, namely, `testAction()`
  *
  * @package			extended_test_case
- * @subpackage    extended_test_case.libs
+ * @subpackage		extended_test_case.libs
  */
 class ExtendedTestCase extends CakeTestCase {
 
