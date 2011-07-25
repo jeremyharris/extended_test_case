@@ -125,6 +125,10 @@ class ExtendedTestCaseTestCase extends CakeTestCase {
 		unset($this->Dummies);
 		ClassRegistry::flush();
 	}
+	
+	function testNotRunningExtendedTestCase() {
+		$this->assertTrue(SimpleTest::isIgnored('ExtendedTestCase'));
+	}
 
 	function testTestActionVars() {
 		$vars = $this->ExtendedTestCase->testAction('/dummies/dummy_action/3');

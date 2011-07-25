@@ -14,6 +14,11 @@
 require_once APP.'config'.DS.'routes.php';
 
 /**
+ * Ensure SimpleTest doesn't think this is a test case
+ */
+SimpleTest::ignore('ExtendedTestCase');
+
+/**
  * ExtendedTestCase class
  *
  * Extends the functionality of CakeTestCase, namely, `testAction()`
