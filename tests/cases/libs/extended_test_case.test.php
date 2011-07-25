@@ -99,6 +99,34 @@ class DummiesController extends Controller {
 		$this->set('prefix', true);
 	}
 }
+/**
+ * Dummy test case
+ *
+ * @package		extended_test_case
+ * @subpackage	extended_test_case.tests.cases.libs
+ */
+class DummyTestCase extends ExtendedTestCase {
+	
+	function testMethod() {		
+	}
+	
+	function testAnotherMethod() {		
+	}	
+}
+/**
+ * Dummy reporter to capture messages
+ *
+ * @package		extended_test_case
+ * @subpackage	extended_test_case.tests.cases.libs
+ */
+class MockReporter {
+	
+	var $messages = array();
+	
+	function paintSkip($msg) {
+		$this->messages[] = $msg;
+	}
+}
 
 Mock::generatePartial('DummiesController', 'MockDummiesController', array('header', 'render', 'redirect'));
 Mock::generatePartial('RequestHandlerComponent', 'MockRequestHandlerComponent', array('_header'));
@@ -124,6 +152,57 @@ class ExtendedTestCaseTestCase extends CakeTestCase {
 		unset($this->ExtendedTestCase);
 		unset($this->Dummies);
 		ClassRegistry::flush();
+	}
+	
+	function testGetTests() {
+		$Case = new DummyTestCase();
+		$Reporter = new MockReporter();
+		$Case->_reporter = $Reporter;
+		
+		$Reporter->messages = array();
+		$result = array_values($Case->getTests());
+		$expected = array('start', 'startCase', 'testMethod', 'testAnotherMethod', 'endCase', 'end');
+		$this->assertEqual($result, $expected);
+		$this->assertEqual(count($Reporter->messages), 0);
+		
+		$Reporter->messages = array();
+		$Case->skipSetup = true;
+		$result = array_values($Case->getTests());
+		$expected = array('startCase', 'testMethod', 'testAnotherMethod', 'endCase');
+		$this->assertEqual($result, $expected);
+		$this->assertEqual(count($Reporter->messages), 0);
+		
+		$Reporter->messages = array();
+		$Case->testMethods = 'testMethod';
+		$Case->skipSetup = false;
+		$result = array_values($Case->getTests());
+		$expected = array('start', 'startCase', 'testMethod', 'endCase', 'end');
+		$this->assertEqual($result, $expected);
+		$this->assertEqual(count($Reporter->messages), 1);
+		
+		$Reporter->messages = array();
+		$Case->testMethods = array('testMethod', 'testAnotherMethod');
+		$Case->skipSetup = false;
+		$result = array_values($Case->getTests());
+		$expected = array('start', 'startCase', 'testMethod', 'testAnotherMethod', 'endCase', 'end');
+		$this->assertEqual($result, $expected);
+		$this->assertEqual(count($Reporter->messages), 0);
+		
+		$Reporter->messages = array();
+		$Case->testMethods = array('testMethod', 'testAnotherMethod');
+		$Case->skipSetup = true;
+		$result = array_values($Case->getTests());
+		$expected = array('startCase', 'testMethod', 'testAnotherMethod', 'endCase');
+		$this->assertEqual($result, $expected);
+		$this->assertEqual(count($Reporter->messages), 0);
+		
+		$Reporter->messages = array();
+		$Case->testMethods = array('testRandomMissingMethod');
+		$Case->skipSetup = true;
+		$result = array_values($Case->getTests());
+		$expected = array('startCase', 'endCase');
+		$this->assertEqual($result, $expected);
+		$this->assertEqual(count($Reporter->messages), 2);
 	}
 	
 	function testNotRunningExtendedTestCase() {
