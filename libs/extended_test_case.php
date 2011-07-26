@@ -18,9 +18,11 @@
 require_once APP.'config'.DS.'routes.php';
 
 /**
- * Ensure SimpleTest doesn't think this is a test case
+ * Ensure SimpleTest doesn't think this is a test case and that it starts from
+ * scratch
  */
 SimpleTest::ignore('ExtendedTestCase');
+ClassRegistry::flush();
 
 /**
  * ExtendedTestCase class
