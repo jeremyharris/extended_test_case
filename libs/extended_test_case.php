@@ -101,6 +101,8 @@ class ExtendedTestCase extends CakeTestCase {
 
 		// set up the controller based on the url
 		$urlParams = Router::parse($url);
+		$extra = array_diff_key($options, array('data' => null, 'method' => null, 'return' => null));
+		$urlParams = array_merge($urlParams, $extra);
 		$action = $urlParams['action'];
 		$prefix = null;
 		$urlParams['url']['url'] = $url;

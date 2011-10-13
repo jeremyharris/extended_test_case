@@ -191,6 +191,19 @@ class ExtendedTestCaseTestCase extends CakeTestCase {
 
 		Configure::write('Routing.prefixes', $oldPrefixes);
 	}
+	
+	function testExtraParams() {
+		$this->ExtendedTestCase->testAction('/dummies/dummy_action/form', array(
+			'form' => array(
+				'test' => 'value'
+			),
+			'pass' => array(
+				'overwrite'
+			)
+		));
+		$this->assertEqual($this->Dummies->params['form'], array('test' => 'value'));
+		$this->assertEqual($this->Dummies->params['pass'][0], 'overwrite');
+	}
 
 }
 ?>
