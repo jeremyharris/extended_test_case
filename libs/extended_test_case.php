@@ -18,6 +18,13 @@
 require_once APP.'config'.DS.'routes.php';
 
 /**
+ * Ensure SimpleTest doesn't think this is a test case and that it starts from
+ * scratch
+ */
+SimpleTest::ignore('ExtendedTestCase');
+ClassRegistry::flush();
+
+/**
  * ExtendedTestCase class
  *
  * Extends the functionality of CakeTestCase, namely, `testAction()`
@@ -42,6 +49,20 @@ class ExtendedTestCase extends CakeTestCase {
  * @var object
  */
 	var $testController = null;
+	
+/**
+ * Methods to test
+ * 
+ * @param Array of methods to test
+ */
+	var $testMethods = null;
+	
+/**
+ * Skip *all* database setup entirely - only use if you're not using fixtures!
+ * 
+ * @var boolean
+ */
+	var $skipSetup = false;
 
 /**
  * Tests an action using the controller itself and skipping the dispatcher, and
@@ -135,6 +156,53 @@ class ExtendedTestCase extends CakeTestCase {
 		$Controller->Component->triggerCallback('beforeRender', $Controller);
 
 		return $Controller->viewVars;
+	}
+	
+/**
+ * Overrides `CakeTestCase::getTests()` to allow running a subset of tests within
+ * the test case
+ * 
+ * To run only certain methods, define a `$testMethods` var as an array of test
+ * methods you would like to test. All others will be ignored
+ * 
+ * {{{
+ * class MyTestCase extends ExtendedTestCase {
+ *   var $testMethods = array('testThis');
+ * 
+ *   function testThis() {} // will run
+ *   function testThat() {} // will not run
+ * } 
+ * }}}
+ * 
+ * Additionally, if you are extended this test case class with a class that contains
+ * all of your fixtures, you can skip the database setup by setting a `$skipSetup`
+ * var to `false` on your test case. This is useful for skipping setting up the
+ * database for things such as your helper's test cases.
+ * 
+ * @return array Array of tests to run
+ */
+	function getTests() {
+		$tests = parent::getTests();
+		$testMethods = array_udiff($tests, $this->methods, 'strcasecmp');
+		if (!isset($this->testMethods) || empty($this->testMethods)) {
+			$this->testMethods = $testMethods;
+		}
+		if (!is_array($this->testMethods)) {
+			$this->testMethods = array($this->testMethods);
+		}
+		if (isset($this->skipSetup) && $this->skipSetup) {
+			$tests = array_udiff($tests, array('start', 'end'), 'strcasecmp');
+		}
+		if (empty($this->testMethods)) {
+			return $tests;
+		}
+		$removeMethods = array_udiff($testMethods, $this->testMethods, 'strcasecmp');
+		$tests = array_udiff($tests, $removeMethods, 'strcasecmp');
+		$skipped = array_udiff($testMethods, $this->testMethods, 'strcasecmp');
+		foreach ($skipped as $skip) {
+			$this->_reporter->paintSkip(sprintf(__('Skipped entire test method: %s', true), $skip));
+		}
+		return $tests;
 	}
 
 }

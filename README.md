@@ -15,6 +15,24 @@ testing.
 
 For more information about utilizing mocks, etc. visit [here][1].
 
+Another handy feature that `ExtendedTestCase` adds is the ability to just test
+certain methods. This is especially useful when you are making minor changes to
+one method (say, a controller method) who's test lies in a large test case that
+loads a lot of fixtures. While testing internally, you can conveniently add an 
+array of methods that you _want_ to run in a `$testMethods` var on your test case.
+
+    class MyTestCase extends ExtendedTestCase {
+        var $testMethods = array('testThis');
+
+        function testThis() {} // will run
+        function testThat() {} // will not run
+    }
+
+Since no other tests run, you'll only need to load the database and fixtures for
+the method you care about at the time. 
+
+__Remember to remove `$testMethods` before you commit anything :)__
+
 ## Features
 
 - Falls back to old `testAction` method if `ExtendedTestCase::testController`
@@ -23,6 +41,7 @@ is not defined
 actions (render, header, etc.) in tests
 - Simulates most of what the controller action does, minus actually rendering
 anything
+- Allows testing a subset of test methods within a large test case
 
 ## License
 
