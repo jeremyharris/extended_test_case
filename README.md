@@ -1,3 +1,8 @@
+> Note: This repo is no longer under active development. These improvements 
+> were contributed to the CakePHP core in the 2.0-dev stage. Please take a 
+> look at [the docs][5] for more info. This plugin is still plenty usable for
+> projects still on the CakePHP 1.3 branch.
+
 # Extended Test Case
 
 Extended test case aims to make the displeasure of using
@@ -59,3 +64,4 @@ Redistributions of files must retain the above copyright notice.
 [2]: http://mark-story.com/posts/view/testing-cakephp-controllers-the-hard-way
 [3]: http://mark-story.com/posts/view/testing-cakephp-controllers-mock-objects-edition
 [4]: http://www.opensource.org/licenses/mit-license.php
+[5]: http://book.cakephp.org/2.0/en/development/testing.html#testing-controllers
